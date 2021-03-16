@@ -3,8 +3,11 @@ import styled from "styled-components";
 import bg from "../assets/images/bg-pattern-card.svg";
 import person from "../assets/images/image-victor.jpg"
 import AppContext from '../context/';
+import ACK from '../assets/images/return.png'
+
+import error from"../assets/images/cerrar.png"
 function Card(props) {
-  const {state}=useContext(AppContext)
+  const {state,changeState}=useContext(AppContext)
 const {addInfo}=state
 
     const CardC = styled.div`
@@ -15,10 +18,20 @@ const {addInfo}=state
   z-index: 11;
   overflow: hidden;
   display: flex;
-
+position: relative;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  .return{
+position:absolute;
+width:40px;
+border-radius:50%;
+padding:10px;
+left:10px;
+top:10px;
+background:#fff;
+height: 40px;
+  }
   span{
       font-weight:400;
       color:${props.colors.Darkgrayishblue}
@@ -31,6 +44,11 @@ const {addInfo}=state
     align-items: center;
     justify-content: flex-end;
     padding-bottom:2em;
+   a{
+     text-align:center;
+     text-decoration:none;
+     color:#000;
+   }
     h3{
       margin:0.5em;
     }
@@ -47,7 +65,7 @@ position: relative;
     border-radius:50%;
     background-repeat:no-repeat;
     background-size:cover;
-    background-image:url(${addInfo[0].avatar_url})
+    background-image:url(${addInfo[0].avatar_url?addInfo[0].avatar_url:error})
 }
   }
   .information {
@@ -74,16 +92,19 @@ position: relative;
     widows: 100%;
   }
 `;
-
+const back=()=>changeState({stateCard: false,
+  addInfo:[]})
   console.log(state);
   return (
     <CardC>
+      <img src={ACK} className="return" onClick={back}/>
       <img className="back" src={bg} />
+
       <div className="data">
-        <h3>
-         {addInfo[0].login} 
+       <a href={addInfo[0].html_url} target="_blank"><h3> 
+         {addInfo[0].login? addInfo[0].login:"user not found"} 
         </h3>
-        <span>{addInfo[0].name}</span>
+        <span>{addInfo[0].name}</span></a>
       </div>
 
       <div className="information">
